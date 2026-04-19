@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      immer:
-        specifier: '*'
-        version: 11.1.4
     devDependencies:
       '@types/node':
         specifier: '*'
@@ -18,6 +14,9 @@ importers:
       '@types/react':
         specifier: '*'
         version: 19.2.14
+      immer:
+        specifier: '*'
+        version: 11.1.4
       oxfmt:
         specifier: '*'
         version: 0.43.0

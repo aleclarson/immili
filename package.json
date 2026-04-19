@@ -14,10 +14,8 @@
   ],
   "type": "module",
   "peerDependencies": {
+    "immer": ">=8",
     "react": ">=18"
-  },
-  "dependencies": {
-    "immer": "*"
   },
   "exports": {
     "types": "./dist/index.d.mts",
@@ -35,6 +33,7 @@
   "devDependencies": {
     "@types/node": "*",
     "@types/react": "*",
+    "immer": "*",
     "oxfmt": "*",
     "oxlint": "*",
     "radashi": "*",

@@ -7,8 +7,10 @@ Minimal Immer-first local state for React applications with one root state tree,
 ## Installation
 
 ```sh
-pnpm add immili react
+pnpm add immili react immer
 ```
+
+`immili` expects `react` and `immer` 8 or newer to be installed by the consuming app.
 
 ## Quick Example
 
