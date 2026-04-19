@@ -15,11 +15,11 @@ pnpm add immili react
 ```tsx
 import { createActions, createStateTree, useActions, useStateTree } from 'immili'
 
-const AppStateTree = createStateTree({
+const AppState = createStateTree({
   counter: { value: 1 },
 })
 
-const AppActions = createActions(AppStateTree, (draft) => ({
+const AppActions = createActions(AppState, (draft) => ({
   counter: {
     increment() {
       draft.counter.value++
@@ -28,7 +28,7 @@ const AppActions = createActions(AppStateTree, (draft) => ({
 }))
 
 export function Counter() {
-  const state = useStateTree(AppStateTree)
+  const state = useStateTree(AppState)
   const actions = useActions(AppActions, state)
 
   return (
