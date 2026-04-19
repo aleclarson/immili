@@ -69,7 +69,7 @@ It assumes one root state tree per mounted app root, immutable snapshot reads, a
 - Every successful root write produces at most one commit.
 - Nested action calls share one root transaction.
 - No partial state is published when an action throws.
-- Bound actions stay stable for the lifetime of a mounted store instance.
+- Bound actions stay stable for the lifetime of a `useActions()` call while its `state` and `actionTree` continue to target the same store instance.
 - `useActions()` requires a snapshot from the matching mounted store instance.
 
 # Error Model

@@ -1,12 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import {
-  createActions,
-  createStateTree,
-  createStoreInstance,
-  getBoundActions,
-  subscribeStore,
-} from '../src/core'
+import { getBoundActions } from '../src/actions'
+import { createActions, createStateTree } from '../src/blueprints'
+import { createStoreInstance } from '../src/store'
 
 describe('immili core runtime', () => {
   it('commits nested actions atomically with one notification', () => {
@@ -38,17 +34,14 @@ describe('immili core runtime', () => {
       }
     })
 
-    const store = createStoreInstance(AppState)
-    const initialSnapshot = store.currentSnapshot
     let notifications = 0
-
-    subscribeStore(store, () => {
+    const store = createStoreInstance(AppState, undefined, () => {
       notifications++
     })
+    const initialSnapshot = store.currentSnapshot
 
     const actions = getBoundActions(AppActions, initialSnapshot)
     expect(factoryCalls).toBe(1)
-    expect(actions).toBe(getBoundActions(AppActions, initialSnapshot))
 
     actions.auth.logOut()
 
@@ -56,7 +49,6 @@ describe('immili core runtime', () => {
     expect(store.currentSnapshot.user).toBeNull()
     expect(store.currentSnapshot.feed.items).toEqual([])
     expect(notifications).toBe(1)
-    expect(actions).toBe(getBoundActions(AppActions, store.currentSnapshot))
   })
 
   it('skips publish and notifications for no-op transactions', () => {
@@ -70,13 +62,11 @@ describe('immili core runtime', () => {
       },
     }))
 
-    const store = createStoreInstance(AppState)
-    const initialSnapshot = store.currentSnapshot
     let notifications = 0
-
-    subscribeStore(store, () => {
+    const store = createStoreInstance(AppState, undefined, () => {
       notifications++
     })
+    const initialSnapshot = store.currentSnapshot
 
     getBoundActions(AppActions, initialSnapshot).foo.noop()
 
@@ -125,13 +115,11 @@ describe('immili core runtime', () => {
       },
     }))
 
-    const store = createStoreInstance(AppState)
-    const initialSnapshot = store.currentSnapshot
     let notifications = 0
-
-    subscribeStore(store, () => {
+    const store = createStoreInstance(AppState, undefined, () => {
       notifications++
     })
+    const initialSnapshot = store.currentSnapshot
 
     expect(() => {
       getBoundActions(AppActions, initialSnapshot).foo.explode()
@@ -222,7 +210,7 @@ describe('immili core runtime', () => {
     }).toThrow('different state tree')
   })
 
-  it('initializes each action tree once per store instance', () => {
+  it('creates a fresh bound actions object for each binding request', () => {
     const AppState = createStateTree({
       foo: { bar: 1 },
     })
@@ -243,15 +231,16 @@ describe('immili core runtime', () => {
 
     const firstStore = createStoreInstance(AppState)
     const firstActions = getBoundActions(AppActions, firstStore.currentSnapshot)
+    const secondActions = getBoundActions(AppActions, firstStore.currentSnapshot)
 
     firstActions.foo.increment()
 
-    expect(factoryCalls).toBe(1)
-    expect(firstActions).toBe(getBoundActions(AppActions, firstStore.currentSnapshot))
+    expect(factoryCalls).toBe(2)
+    expect(firstActions).not.toBe(secondActions)
 
     const secondStore = createStoreInstance(AppState)
     getBoundActions(AppActions, secondStore.currentSnapshot)
 
-    expect(factoryCalls).toBe(2)
+    expect(factoryCalls).toBe(3)
   })
 })

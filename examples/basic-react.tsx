@@ -1,11 +1,4 @@
-import { createElement } from 'react'
-
-import {
-  createActions,
-  createStateTree,
-  useActions,
-  useStateTree,
-} from 'immili'
+import { createActions, createStateTree, useActions, useStateTree } from 'immili'
 
 type Counter = {
   value: number
@@ -26,13 +19,13 @@ type AppState = {
   user: User | null
 }
 
-export const AppStateTree = createStateTree<AppState>({
+export const AppState = createStateTree<AppState>({
   counter: { value: 1 },
   feed: { items: [] },
   user: { id: '1', name: 'Ada' },
 })
 
-export const AppActions = createActions(AppStateTree, (draft) => {
+export const AppActions = createActions(AppState, (draft) => {
   const feed = {
     reset() {
       draft.feed.items = []
@@ -59,31 +52,24 @@ export const AppActions = createActions(AppStateTree, (draft) => {
 })
 
 export function App() {
-  const state = useStateTree(AppStateTree)
+  const state = useStateTree(AppState)
   const actions = useActions(AppActions, state)
 
-  return createElement(
-    'main',
-    null,
-    createElement(
-      'button',
-      { onClick: () => actions.counter.increment() },
-      `Count: ${state.counter.value}`,
-    ),
-    createElement(
-      'button',
-      {
-        onClick: () =>
+  return (
+    <main>
+      <button onClick={() => actions.counter.increment()}>Count: {state.counter.value}</button>
+      <button
+        onClick={() =>
           actions.draft((draft) => {
             draft.feed.items.push(`item-${draft.feed.items.length + 1}`)
-          }),
-      },
-      `Items: ${state.feed.items.length}`,
-    ),
-    createElement(
-      'button',
-      { onClick: () => actions.auth.logOut() },
-      state.user ? `Log out ${state.user.name}` : 'Logged out',
-    ),
+          })
+        }
+      >
+        Items: {state.feed.items.length}
+      </button>
+      <button onClick={() => actions.auth.logOut()}>
+        {state.user ? `Log out ${state.user.name}` : 'Logged out'}
+      </button>
+    </main>
   )
 }

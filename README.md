@@ -42,5 +42,5 @@ export function Counter() {
 ## Documentation Map
 
 - Conceptual model and recommended patterns: [docs/context.md](docs/context.md)
-- Canonical usage example: [examples/basic-react.ts](examples/basic-react.ts)
+- Canonical usage example: [examples/basic-react.tsx](examples/basic-react.tsx)
 - Exact exported signatures: [dist/index.d.mts](dist/index.d.mts)
