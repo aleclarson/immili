@@ -31,16 +31,16 @@
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
-    "@types/node": "*",
-    "@types/react": "*",
-    "immer": "*",
-    "oxfmt": "*",
-    "oxlint": "*",
-    "radashi": "*",
-    "react": "*",
-    "tsdown": "*",
-    "tsnapi": "^0.1.1",
-    "typescript": "*",
-    "vitest": "*"
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "immer": "^11.1.4",
+    "oxfmt": "^0.45.0",
+    "oxlint": "^1.60.0",
+    "radashi": "^12.7.2",
+    "react": "^19.2.5",
+    "tsdown": "^0.21.9",
+    "tsnapi": "^0.3.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.4"
   }
 }
