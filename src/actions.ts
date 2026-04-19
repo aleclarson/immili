@@ -8,7 +8,7 @@ import {
   type DeepPatch,
 } from './blueprints'
 import { applyMergePatch } from './patch'
-import { deepFreezeObject, isObjectRecord, isPlainObject } from './shared'
+import { isObjectRecord, isPlainObject } from './shared'
 import { resolveStoreFromSnapshot, type StoreInstance } from './store'
 import { createDraftProxy, getActiveRootDraft, runWithTransaction } from './transactions'
 
@@ -55,7 +55,7 @@ export function createBoundActions<S extends object, A extends ActionNamespace>(
     })
   }
 
-  return deepFreezeObject(actions)
+  return Object.freeze(actions) as BoundActions<S, A>
 }
 
 function bindNamespace<S extends object>(
@@ -87,5 +87,8 @@ function bindNamespace<S extends object>(
     bound[key] = bindNamespace(store, member, actionPath)
   }
 
+  if (path.length === 0) {
+    return bound
+  }
   return Object.freeze(bound)
 }

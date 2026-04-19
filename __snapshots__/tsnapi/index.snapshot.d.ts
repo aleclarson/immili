@@ -17,7 +17,9 @@ export interface StateTree<S extends object> {
 
 // Types
 export type BoundActions<S extends object, A extends ActionNamespace> = BoundActionNamespace<A> & RootHelpers<S>;
-export type DeepPatch<T> = T extends readonly unknown[] ? T : T extends object ? { [K in keyof T]?: DeepPatch<T[K]> } : T;
+export type DeepPatch<T> = T extends readonly unknown[] | Function | Promise<any> | Date | RegExp | {
+  [immerable]: false;
+} ? T : T extends object ? { [K in keyof T]?: DeepPatch<T[K]> } : T;
 
 // Functions
 export declare function createActions<S extends object, A extends ActionNamespace>(_: StateTree<S>, _: (draft: Draft<S>) => A): ActionTree<S, A>;

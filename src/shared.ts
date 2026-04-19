@@ -1,13 +1,3 @@
-export function deepFreezeObject<T extends object>(value: T): T {
-  for (const nested of Object.values(value)) {
-    if (isObjectRecord(nested) && !Object.isFrozen(nested)) {
-      deepFreezeObject(nested)
-    }
-  }
-
-  return Object.freeze(value)
-}
-
 export function isObjectRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null
 }
